@@ -1,0 +1,144 @@
+{
+  "name": "copilot-chat-saver",
+  "displayName": "Copilot Chat Saver",
+  "description": "Save and export GitHub Copilot chat history to Markdown and JSON files",
+  "version": "0.1.0",
+  "publisher": "local",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "extensionDependencies": [
+    "github.copilot-chat"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "copilotChatSaver.exportAll",
+        "title": "Copilot Chat Saver: Export All Chat History"
+      },
+      {
+        "command": "copilotChatSaver.exportLatest",
+        "title": "Copilot Chat Saver: Export Latest Chat Session"
+      },
+      {
+        "command": "copilotChatSaver.toggleAutoSave",
+        "title": "Copilot Chat Saver: Toggle Auto-Save"
+      },
+      {
+        "command": "copilotChatSaver.openOutputDir",
+        "title": "Copilot Chat Saver: Open Output Directory"
+      },
+      {
+        "command": "copilotChatSaver.refreshIndex",
+        "title": "Copilot Chat Saver: Refresh Chat History Index"
+      }
+    ],
+    "chatParticipants": [
+      {
+        "id": "copilotChatSaver.history",
+        "name": "history",
+        "fullName": "Chat History",
+        "description": "Search and recall past Copilot chat sessions. Ask questions with context from previous conversations automatically injected.",
+        "isSticky": false
+      }
+    ],
+    "languageModelTools": [
+      {
+        "name": "copilotChatSaver_searchHistory",
+        "displayName": "Search Chat History",
+        "description": "Search the user's past Copilot chat sessions across all workspaces. Returns relevant context from previous conversations that match the query. Use this when the user references past work, asks 'how did I...', 'what was the fix for...', or needs context from previous sessions.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "The search query — what topic or question to find in past chat history"
+            },
+            "maxResults": {
+              "type": "number",
+              "description": "Maximum number of past sessions to return (default: 5)"
+            }
+          },
+          "required": ["query"]
+        },
+        "tags": ["history", "context", "memory", "past-chats"]
+      }
+    ],
+    "configuration": {
+      "title": "Copilot Chat Saver",
+      "properties": {
+        "copilotChatSaver.outputDirectory": {
+          "type": "string",
+          "default": "",
+          "description": "Directory to save exported chat history. Defaults to ~/copilot-chat-exports/"
+        },
+        "copilotChatSaver.format": {
+          "type": "string",
+          "enum": [
+            "markdown",
+            "json",
+            "both"
+          ],
+          "default": "both",
+          "description": "Export format for chat history"
+        },
+        "copilotChatSaver.autoSaveIntervalMinutes": {
+          "type": "number",
+          "default": 0,
+          "description": "Auto-save interval in minutes (0 = disabled)"
+        },
+        "copilotChatSaver.includeTimestamps": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include timestamps in exported chat history"
+        },
+        "copilotChatSaver.includeThinking": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include Claude thinking/reasoning blocks as collapsible sections"
+        },
+        "copilotChatSaver.includeToolCalls": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include tool call details (file reads, searches, edits)"
+        },
+        "copilotChatSaver.enableSimilarChats": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically detect new chat sessions and show similar past chats"
+        },
+        "copilotChatSaver.similarChatsMaxResults": {
+          "type": "number",
+          "default": 5,
+          "minimum": 1,
+          "maximum": 20,
+          "description": "Maximum number of similar past chats to show"
+        },
+        "copilotChatSaver.similarChatsMinScore": {
+          "type": "number",
+          "default": 0.05,
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Minimum TF-IDF similarity score (0-1) for a past chat to be considered similar"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.90.0",
+    "typescript": "^5.3.0"
+  }
+}
