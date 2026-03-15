@@ -1,9 +1,9 @@
 {
-  "name": "Copilot Scribe",
+  "name": "copilot-scribe",
   "displayName": "Copilot Scribe",
   "description": "Global memory for github copilot, save, export and search over the entire sessions",
   "version": "0.1.0",
-  "publisher": "Copilot Scribe",
+  "publisher": "local",
   "license": "AGPL-3.0",
   "engines": {
     "vscode": "^1.90.0"
