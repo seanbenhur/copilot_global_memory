@@ -1,6 +1,6 @@
 # Publishing to the VS Code Marketplace
 
-This guide covers everything needed to publish **Copilot Chat Saver** to the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/vscode).
+This guide covers everything needed to publish **Copilot Scribe** to the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/vscode).
 
 ---
 
@@ -55,15 +55,15 @@ Ensure these fields are present in `package.json`:
 
 ```json
 {
-  "name": "copilot-chat-saver",
-  "displayName": "Copilot Chat Saver",
+  "name": "copilot-scribe",
+  "displayName": "Copilot Scribe",
   "description": "Save and export GitHub Copilot chat history to Markdown and JSON files",
   "version": "0.1.0",
   "publisher": "your-publisher-id",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/copilot-chat-saver"
+    "url": "https://github.com/your-username/copilot-scribe"
   },
   "icon": "icon.png",
   "galleryBanner": {
@@ -80,38 +80,16 @@ Ensure these fields are present in `package.json`:
 | `displayName` | **Yes** | Shown in the Marketplace |
 | `description` | **Yes** | Short summary |
 | `version` | **Yes** | Semver (e.g., `0.1.0`) |
-| `license` | Recommended | e.g., `MIT`, `Apache-2.0` |
+| `license` | Recommended | e.g., `AGPL-3.0`, `Apache-2.0` |
 | `repository` | Recommended | GitHub URL — enables source link on Marketplace |
 | `icon` | Recommended | 128x128 or 256x256 PNG in the project root |
 
 ### 2.2 Add a LICENSE File
 
 ```bash
-cd ~/copilot-chat-saver
-# Example: MIT license
-cat > LICENSE << 'EOF'
-MIT License
-
-Copyright (c) 2026 Your Name
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-EOF
+cd ~/copilot-scribe
+# Example: AGPL-3.0 license
+npx license agpl-3.0 > LICENSE
 ```
 
 ### 2.3 Add an Icon (Optional but Recommended)
@@ -150,15 +128,15 @@ npm install -g @vscode/vsce
 Build and package into a `.vsix` file:
 
 ```bash
-cd ~/copilot-chat-saver
+cd ~/copilot-scribe
 npm run compile
 vsce package --allow-missing-repository
 ```
 
-This creates `copilot-chat-saver-0.1.0.vsix`. You can test it locally:
+This creates `copilot-scribe-0.1.0.vsix`. You can test it locally:
 
 ```bash
-code --install-extension copilot-chat-saver-0.1.0.vsix
+code --install-extension copilot-scribe-0.1.0.vsix
 ```
 
 ---
@@ -181,7 +159,7 @@ vsce publish
 
 That's it. The extension will be live on the Marketplace within a few minutes at:
 ```
-https://marketplace.visualstudio.com/items?itemName=your-publisher-id.copilot-chat-saver
+https://marketplace.visualstudio.com/items?itemName=your-publisher-id.copilot-scribe
 ```
 
 ### 5.3 Publish a Specific Version (Optional)
@@ -204,7 +182,7 @@ vsce publish major
 ## 6. Update an Existing Published Extension
 
 ```bash
-cd ~/copilot-chat-saver
+cd ~/copilot-scribe
 
 # 1. Make your code changes
 # 2. Compile
@@ -219,7 +197,7 @@ vsce publish patch
 ## 7. Unpublish (If Needed)
 
 ```bash
-vsce unpublish your-publisher-id.copilot-chat-saver
+vsce unpublish your-publisher-id.copilot-scribe
 ```
 
 ---

@@ -1,4 +1,4 @@
-# Copilot Chat Saver — Local Testing Guide
+# Copilot Scribe — Local Testing Guide
 
 ## Prerequisites
 
@@ -11,7 +11,7 @@
 ## 1. Setup
 
 ```bash
-cd ~/copilot-chat-saver
+cd ~/copilot-scribe
 npm install
 npm run compile
 ```
@@ -28,13 +28,13 @@ ls out/
 
 ## 2. Launch the Extension in Debug Mode
 
-1. Open the `~/copilot-chat-saver` folder in VS Code.
+1. Open the `~/copilot-scribe` folder in VS Code.
 2. Press **F5** (or **Run → Start Debugging**).
    - VS Code will open a new **Extension Development Host** window.
    - The extension activates automatically on startup (`onStartupFinished`).
 3. You should see:
    - A **"$(history) Chat Saver"** item in the bottom-right status bar.
-   - An info toast: _"Copilot Chat Saver is active — global history across all workspaces."_
+   - An info toast: _"Copilot Scribe is active — global history across all workspaces."_
 
 > **Tip:** If no launch configuration exists, create `.vscode/launch.json`:
 > ```json
@@ -60,7 +60,7 @@ ls out/
 | Step | Action | Expected Result |
 |------|--------|-----------------|
 | 1 | Open the Command Palette (`Cmd+Shift+P`) | Palette opens |
-| 2 | Type **"Copilot Chat Saver: Export All"** and select it | Status bar shows spinning icon then "Exporting N..." |
+| 2 | Type **"Copilot Scribe: Export All"** and select it | Status bar shows spinning icon then "Exporting N..." |
 | 3 | Wait for export to finish | Info toast: _"Exported N session(s) from all workspaces (X new/changed, Y unchanged)"_ with **Open Directory** / **Open File** buttons |
 | 4 | Click **Open Directory** | Finder opens `~/copilot-chat-exports/` |
 | 5 | Verify files | You should see `.md` and `.json` files (per-session + combined). Markdown files should contain chat messages grouped by workspace |
@@ -69,7 +69,7 @@ ls out/
 
 | Step | Action | Expected Result |
 |------|--------|-----------------|
-| 1 | Run **"Copilot Chat Saver: Export Latest Chat Session"** | Info toast showing the latest session title and workspace name |
+| 1 | Run **"Copilot Scribe: Export Latest Chat Session"** | Info toast showing the latest session title and workspace name |
 | 2 | Click **Open File** | Markdown file opens with the most recent chat session content |
 | 3 | Verify content | Messages should show user/assistant roles, timestamps, and (if present) thinking blocks in `<details>` tags and tool calls with status icons |
 
@@ -84,7 +84,7 @@ ls out/
 
 | Step | Action | Expected Result |
 |------|--------|-----------------|
-| 1 | Run **"Copilot Chat Saver: Toggle Auto-Save"** | Input box appears asking for interval in minutes |
+| 1 | Run **"Copilot Scribe: Toggle Auto-Save"** | Input box appears asking for interval in minutes |
 | 2 | Enter `1` and press Enter | Toast: _"Auto-save enabled: every 1 minute(s)."_ Status bar tooltip updates |
 | 3 | Wait ~60 seconds | Export runs automatically (status bar flashes) |
 | 4 | Run **Toggle Auto-Save** again | Toast: _"Auto-save disabled."_ |
@@ -93,7 +93,7 @@ ls out/
 
 | Step | Action | Expected Result |
 |------|--------|-----------------|
-| 1 | Run **"Copilot Chat Saver: Open Output Directory"** | Finder/Explorer opens `~/copilot-chat-exports/` (or your configured directory) |
+| 1 | Run **"Copilot Scribe: Open Output Directory"** | Finder/Explorer opens `~/copilot-chat-exports/` (or your configured directory) |
 
 ### 3.6 `@history` Chat Participant — Context-Aware Q&A
 
@@ -118,12 +118,12 @@ This is the primary way to leverage past chat knowledge. The `@history` particip
 
 ### 3.7 Automatic History Tool — Agent Mode (Zero Effort)
 
-When using Copilot in **Agent mode** (the mode with tool access), the `copilotChatSaver_searchHistory` tool is registered and available. Copilot can call it **automatically** when it thinks past chat context would be helpful — no need to type `@history` or open any command palette.
+When using Copilot in **Agent mode** (the mode with tool access), the `copilotScribe_searchHistory` tool is registered and available. Copilot can call it **automatically** when it thinks past chat context would be helpful — no need to type `@history` or open any command palette.
 
 | Step | Action | Expected Result |
 |------|--------|-----------------|
 | 1 | Switch Copilot Chat to **Agent mode** (if supported in your version) | Agent mode active — Copilot can use tools |
-| 2 | Ask: `"How did I fix the database connection issue last time?"` | Copilot recognizes this references past work and automatically calls the `copilotChatSaver_searchHistory` tool |
+| 2 | Ask: `"How did I fix the database connection issue last time?"` | Copilot recognizes this references past work and automatically calls the `copilotScribe_searchHistory` tool |
 | 3 | Observe the tool invocation | In the chat, you should see a progress message: _"Searching past chat history for: ..."_ followed by LM re-ranking of candidates |
 | 4 | Wait for response | Copilot responds with information from your past sessions, citing relevant conversations (results are semantically re-ranked for better accuracy) |
 | 5 | Ask a completely new question with no past history | Copilot does NOT call the history tool (since it's not relevant) |
@@ -134,7 +134,7 @@ When using Copilot in **Agent mode** (the mode with tool access), the `copilotCh
 
 | Step | Action | Expected Result |
 |------|--------|-----------------|
-| 1 | Run **"Copilot Chat Saver: Refresh Chat History Index"** (`Cmd+Shift+P`) | Toast: _"Chat history index refreshed."_ |
+| 1 | Run **"Copilot Scribe: Refresh Chat History Index"** (`Cmd+Shift+P`) | Toast: _"Chat history index refreshed."_ |
 | 2 | Use `@history` with a recent topic | Results should include the very latest sessions |
 
 > The index also auto-refreshes when the FS watcher detects new chat session files (with a 5-second debounce).
@@ -145,8 +145,8 @@ When using Copilot in **Agent mode** (the mode with tool access), the `copilotCh
 |------|--------|-----------------|
 | 1 | Export a session where Claude was used (with thinking enabled) | Markdown contains `<details><summary>🧠 Thinking</summary>` collapsible sections |
 | 2 | Export a session that used tool calls (file edits, searches) | Markdown contains tool call entries with ✅ (complete) or ⏳ (in-progress) icons |
-| 3 | Set `copilotChatSaver.includeThinking` to `false` | Re-export — thinking blocks should no longer appear |
-| 4 | Set `copilotChatSaver.includeToolCalls` to `false` | Re-export — tool call details should no longer appear |
+| 3 | Set `copilotScribe.includeThinking` to `false` | Re-export — thinking blocks should no longer appear |
+| 4 | Set `copilotScribe.includeToolCalls` to `false` | Re-export — tool call details should no longer appear |
 
 ---
 
@@ -209,7 +209,7 @@ When using Copilot in **Agent mode** (the mode with tool access), the `copilotCh
 
 ## 5. Settings Reference
 
-All settings are under `copilotChatSaver.*` in VS Code Settings (`Cmd+,`):
+All settings are under `copilotScribe.*` in VS Code Settings (`Cmd+,`):
 
 | Setting | Type | Default | Description |
 |---------|------|---------|-------------|

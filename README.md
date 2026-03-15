@@ -1,4 +1,4 @@
-# Copilot Chat Saver
+# Copilot Scribe
 
 A VS Code extension that exports your **global** GitHub Copilot chat history — across all workspaces — to Markdown and JSON files, and **automatically feeds relevant past chat context into new conversations**.
 
@@ -8,7 +8,7 @@ A VS Code extension that exports your **global** GitHub Copilot chat history —
 Type `@history <your question>` in Copilot Chat to get answers informed by your past conversations. The extension searches your history, finds similar sessions, re-ranks them semantically using Copilot's LM, and injects the full context into the response.
 
 ### Automatic Tool — Agent Mode
-In Agent mode, Copilot can automatically call the `copilotChatSaver_searchHistory` tool when it detects your question references past work ("how did I implement the retry logic...", "what was the fix for the CORS error..."). Zero effort required.
+In Agent mode, Copilot can automatically call the `copilotScribe_searchHistory` tool when it detects your question references past work ("how did I implement the retry logic...", "what was the fix for the CORS error..."). Zero effort required.
 
 ### Full-Featured Export
 - **Global History** — Aggregates chat sessions from ALL workspaces, not just the current one
@@ -54,12 +54,12 @@ The FS watcher (`chatWatcher.ts`) automatically refreshes the TF-IDF index when 
 ### From Source (Development)
 
 ```bash
-cd ~/copilot-chat-saver
+cd ~/copilot-scribe
 npm install
 npm run compile
 
 # Symlink into VS Code extensions
-ln -sfn "$(pwd)" ~/.vscode/extensions/local.copilot-chat-saver-0.1.0
+ln -sfn "$(pwd)" ~/.vscode/extensions/local.copilot-scribe-0.1.0
 
 # Reload VS Code (Cmd+Shift+P → "Developer: Reload Window")
 ```
@@ -72,11 +72,11 @@ Open the Command Palette (`Cmd+Shift+P`) and search for:
 
 | Command | Description |
 |---------|-------------|
-| `Copilot Chat Saver: Export All Chat History` | Export all sessions from all workspaces |
-| `Copilot Chat Saver: Export Latest Chat Session` | Export the most recent session |
-| `Copilot Chat Saver: Toggle Auto-Save` | Enable/disable periodic auto-export |
-| `Copilot Chat Saver: Open Output Directory` | Reveal the export folder in Finder |
-| `Copilot Chat Saver: Refresh Chat History Index` | Force rebuild of the TF-IDF search index |
+| `Copilot Scribe: Export All Chat History` | Export all sessions from all workspaces |
+| `Copilot Scribe: Export Latest Chat Session` | Export the most recent session |
+| `Copilot Scribe: Toggle Auto-Save` | Enable/disable periodic auto-export |
+| `Copilot Scribe: Open Output Directory` | Reveal the export folder in Finder |
+| `Copilot Scribe: Refresh Chat History Index` | Force rebuild of the TF-IDF search index |
 
 ## Chat Participant
 
@@ -98,15 +98,15 @@ The participant:
 
 | Setting | Default | Description |
 |---------|---------|-------------|
-| `copilotChatSaver.outputDirectory` | `~/copilot-chat-exports/` | Where to save exported files |
-| `copilotChatSaver.format` | `both` | `markdown`, `json`, or `both` |
-| `copilotChatSaver.autoSaveIntervalMinutes` | `0` (disabled) | Auto-save interval in minutes |
-| `copilotChatSaver.includeTimestamps` | `true` | Include message timestamps |
-| `copilotChatSaver.includeThinking` | `true` | Include Claude thinking/reasoning blocks |
-| `copilotChatSaver.includeToolCalls` | `true` | Include tool call details |
-| `copilotChatSaver.enableSimilarChats` | `true` | Enable FS watcher for auto-index refresh |
-| `copilotChatSaver.similarChatsMaxResults` | `5` | Max similar sessions to return |
-| `copilotChatSaver.similarChatsMinScore` | `0.05` | Minimum TF-IDF score threshold |
+| `copilotScribe.outputDirectory` | `~/copilot-chat-exports/` | Where to save exported files |
+| `copilotScribe.format` | `both` | `markdown`, `json`, or `both` |
+| `copilotScribe.autoSaveIntervalMinutes` | `0` (disabled) | Auto-save interval in minutes |
+| `copilotScribe.includeTimestamps` | `true` | Include message timestamps |
+| `copilotScribe.includeThinking` | `true` | Include Claude thinking/reasoning blocks |
+| `copilotScribe.includeToolCalls` | `true` | Include tool call details |
+| `copilotScribe.enableSimilarChats` | `true` | Enable FS watcher for auto-index refresh |
+| `copilotScribe.similarChatsMaxResults` | `5` | Max similar sessions to return |
+| `copilotScribe.similarChatsMinScore` | `0.05` | Minimum TF-IDF score threshold |
 
 ## Output
 
@@ -225,4 +225,4 @@ This extension:
 
 ## License
 
-MIT
+AGPL-3.0

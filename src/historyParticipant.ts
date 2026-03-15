@@ -12,7 +12,7 @@ import { rerank } from './lmReranker';
  */
 export function registerHistoryParticipant(context: vscode.ExtensionContext): void {
   const participant = vscode.chat.createChatParticipant(
-    'copilotChatSaver.history',
+    'copilotScribe.history',
     historyHandler,
   );
 
@@ -36,7 +36,7 @@ const historyHandler: vscode.ChatRequestHandler = async (
   // 1. Search the index
   stream.progress('Searching past chat sessions...');
 
-  const config = vscode.workspace.getConfiguration('copilotChatSaver');
+  const config = vscode.workspace.getConfiguration('copilotScribe');
   const maxResults = config.get<number>('similarChatsMaxResults', 5);
   const minScore = config.get<number>('similarChatsMinScore', 0.05);
 

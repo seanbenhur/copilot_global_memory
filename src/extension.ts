@@ -15,7 +15,7 @@ let chatWatcher: ChatWatcher | undefined;
 export function activate(context: vscode.ExtensionContext) {
   // Status bar
   statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
-  statusBarItem.command = 'copilotChatSaver.exportAll';
+  statusBarItem.command = 'copilotScribe.exportAll';
   statusBarItem.text = '$(history) Chat Saver';
   statusBarItem.tooltip = 'Click to export Copilot chat history (all workspaces)';
   statusBarItem.show();
@@ -23,11 +23,11 @@ export function activate(context: vscode.ExtensionContext) {
 
   // Commands
   context.subscriptions.push(
-    vscode.commands.registerCommand('copilotChatSaver.exportAll', () => exportAllHistory()),
-    vscode.commands.registerCommand('copilotChatSaver.exportLatest', () => exportLatestSession()),
-    vscode.commands.registerCommand('copilotChatSaver.toggleAutoSave', () => toggleAutoSave()),
-    vscode.commands.registerCommand('copilotChatSaver.openOutputDir', () => openOutputDir()),
-    vscode.commands.registerCommand('copilotChatSaver.refreshIndex', () => {
+    vscode.commands.registerCommand('copilotScribe.exportAll', () => exportAllHistory()),
+    vscode.commands.registerCommand('copilotScribe.exportLatest', () => exportLatestSession()),
+    vscode.commands.registerCommand('copilotScribe.toggleAutoSave', () => toggleAutoSave()),
+    vscode.commands.registerCommand('copilotScribe.openOutputDir', () => openOutputDir()),
+    vscode.commands.registerCommand('copilotScribe.refreshIndex', () => {
       refreshIndex();
       vscode.window.showInformationMessage('Chat history index refreshed.');
     }),
@@ -35,7 +35,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   // Register the LM tool — Copilot Agent mode can call this automatically
   context.subscriptions.push(
-    vscode.lm.registerTool('copilotChatSaver_searchHistory', new HistorySearchTool()),
+    vscode.lm.registerTool('copilotScribe_searchHistory', new HistorySearchTool()),
   );
 
   // Register the @history chat participant
@@ -45,7 +45,7 @@ export function activate(context: vscode.ExtensionContext) {
   refreshIndex();
 
   // Start the FS watcher to auto-refresh the index when new sessions appear
-  const enableSimilar = vscode.workspace.getConfiguration('copilotChatSaver')
+  const enableSimilar = vscode.workspace.getConfiguration('copilotScribe')
     .get<boolean>('enableSimilarChats', true);
   if (enableSimilar) {
     chatWatcher = new ChatWatcher();
@@ -62,7 +62,7 @@ export function activate(context: vscode.ExtensionContext) {
   // Watch for config changes
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration(e => {
-      if (e.affectsConfiguration('copilotChatSaver.autoSaveIntervalMinutes')) {
+      if (e.affectsConfiguration('copilotScribe.autoSaveIntervalMinutes')) {
         const newInterval = getAutoSaveInterval();
         stopAutoSave();
         if (newInterval > 0) {
@@ -72,7 +72,7 @@ export function activate(context: vscode.ExtensionContext) {
     })
   );
 
-  vscode.window.showInformationMessage('Copilot Chat Saver is active — global history across all workspaces.');
+  vscode.window.showInformationMessage('Copilot Scribe is active — global history across all workspaces.');
 }
 
 export function deactivate() {
@@ -174,7 +174,7 @@ async function toggleAutoSave() {
     if (input) {
       const minutes = Number(input);
       startAutoSave(minutes);
-      vscode.workspace.getConfiguration('copilotChatSaver')
+      vscode.workspace.getConfiguration('copilotScribe')
         .update('autoSaveIntervalMinutes', minutes, vscode.ConfigurationTarget.Global);
       vscode.window.showInformationMessage(`Auto-save enabled: every ${minutes} minute(s).`);
     }
@@ -208,7 +208,7 @@ function stopAutoSave() {
 // ─── Config helpers ──────────────────────────────────────────────────
 
 function getExportConfig(): ExportConfig {
-  const config = vscode.workspace.getConfiguration('copilotChatSaver');
+  const config = vscode.workspace.getConfiguration('copilotScribe');
 
   let outputDir = config.get<string>('outputDirectory', '');
   if (!outputDir) {
@@ -225,6 +225,6 @@ function getExportConfig(): ExportConfig {
 }
 
 function getAutoSaveInterval(): number {
-  return vscode.workspace.getConfiguration('copilotChatSaver')
+  return vscode.workspace.getConfiguration('copilotScribe')
     .get<number>('autoSaveIntervalMinutes', 0);
 }

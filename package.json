@@ -1,9 +1,10 @@
 {
-  "name": "copilot-chat-saver",
-  "displayName": "Copilot Chat Saver",
-  "description": "Save and export GitHub Copilot chat history to Markdown and JSON files",
+  "name": "Copilot Scribe",
+  "displayName": "Copilot Scribe",
+  "description": "Global memory for github copilot, save, export and search over the entire sessions",
   "version": "0.1.0",
-  "publisher": "local",
+  "publisher": "Copilot Scribe",
+  "license": "AGPL-3.0",
   "engines": {
     "vscode": "^1.90.0"
   },
@@ -20,29 +21,29 @@
   "contributes": {
     "commands": [
       {
-        "command": "copilotChatSaver.exportAll",
-        "title": "Copilot Chat Saver: Export All Chat History"
+        "command": "copilotScribe.exportAll",
+        "title": "Copilot Scribe: Export All Chat History"
       },
       {
-        "command": "copilotChatSaver.exportLatest",
-        "title": "Copilot Chat Saver: Export Latest Chat Session"
+        "command": "copilotScribe.exportLatest",
+        "title": "Copilot Scribe: Export Latest Chat Session"
       },
       {
-        "command": "copilotChatSaver.toggleAutoSave",
-        "title": "Copilot Chat Saver: Toggle Auto-Save"
+        "command": "copilotScribe.toggleAutoSave",
+        "title": "Copilot Scribe: Toggle Auto-Save"
       },
       {
-        "command": "copilotChatSaver.openOutputDir",
-        "title": "Copilot Chat Saver: Open Output Directory"
+        "command": "copilotScribe.openOutputDir",
+        "title": "Copilot Scribe: Open Output Directory"
       },
       {
-        "command": "copilotChatSaver.refreshIndex",
-        "title": "Copilot Chat Saver: Refresh Chat History Index"
+        "command": "copilotScribe.refreshIndex",
+        "title": "Copilot Scribe: Refresh Chat History Index"
       }
     ],
     "chatParticipants": [
       {
-        "id": "copilotChatSaver.history",
+        "id": "copilotScribe.history",
         "name": "history",
         "fullName": "Chat History",
         "description": "Search and recall past Copilot chat sessions. Ask questions with context from previous conversations automatically injected.",
@@ -51,7 +52,7 @@
     ],
     "languageModelTools": [
       {
-        "name": "copilotChatSaver_searchHistory",
+        "name": "copilotScribe_searchHistory",
         "displayName": "Search Chat History",
         "description": "Search the user's past Copilot chat sessions across all workspaces. Returns relevant context from previous conversations that match the query. Use this when the user references past work, asks 'how did I...', 'what was the fix for...', or needs context from previous sessions.",
         "inputSchema": {
@@ -66,20 +67,27 @@
               "description": "Maximum number of past sessions to return (default: 5)"
             }
           },
-          "required": ["query"]
+          "required": [
+            "query"
+          ]
         },
-        "tags": ["history", "context", "memory", "past-chats"]
+        "tags": [
+          "history",
+          "context",
+          "memory",
+          "past-chats"
+        ]
       }
     ],
     "configuration": {
-      "title": "Copilot Chat Saver",
+      "title": "Copilot Scribe",
       "properties": {
-        "copilotChatSaver.outputDirectory": {
+        "copilotScribe.outputDirectory": {
           "type": "string",
           "default": "",
           "description": "Directory to save exported chat history. Defaults to ~/copilot-chat-exports/"
         },
-        "copilotChatSaver.format": {
+        "copilotScribe.format": {
           "type": "string",
           "enum": [
             "markdown",
@@ -89,39 +97,39 @@
           "default": "both",
           "description": "Export format for chat history"
         },
-        "copilotChatSaver.autoSaveIntervalMinutes": {
+        "copilotScribe.autoSaveIntervalMinutes": {
           "type": "number",
           "default": 0,
           "description": "Auto-save interval in minutes (0 = disabled)"
         },
-        "copilotChatSaver.includeTimestamps": {
+        "copilotScribe.includeTimestamps": {
           "type": "boolean",
           "default": true,
           "description": "Include timestamps in exported chat history"
         },
-        "copilotChatSaver.includeThinking": {
+        "copilotScribe.includeThinking": {
           "type": "boolean",
           "default": true,
           "description": "Include Claude thinking/reasoning blocks as collapsible sections"
         },
-        "copilotChatSaver.includeToolCalls": {
+        "copilotScribe.includeToolCalls": {
           "type": "boolean",
           "default": true,
           "description": "Include tool call details (file reads, searches, edits)"
         },
-        "copilotChatSaver.enableSimilarChats": {
+        "copilotScribe.enableSimilarChats": {
           "type": "boolean",
           "default": true,
           "description": "Automatically detect new chat sessions and show similar past chats"
         },
-        "copilotChatSaver.similarChatsMaxResults": {
+        "copilotScribe.similarChatsMaxResults": {
           "type": "number",
           "default": 5,
           "minimum": 1,
           "maximum": 20,
           "description": "Maximum number of similar past chats to show"
         },
-        "copilotChatSaver.similarChatsMinScore": {
+        "copilotScribe.similarChatsMinScore": {
           "type": "number",
           "default": 0.05,
           "minimum": 0,

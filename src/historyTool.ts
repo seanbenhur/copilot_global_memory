@@ -69,7 +69,7 @@ export function formatSessionsAsContext(
   return parts.join('\n---\n\n');
 }
 
-// ─── LM Tool: copilotChatSaver_searchHistory ────────────────────────
+// ─── LM Tool: copilotScribe_searchHistory ────────────────────────
 
 interface SearchHistoryInput {
   query: string;
@@ -87,7 +87,7 @@ export class HistorySearchTool implements vscode.LanguageModelTool<SearchHistory
   ): Promise<vscode.LanguageModelToolResult> {
     const { query, maxResults = 5 } = options.input;
 
-    const config = vscode.workspace.getConfiguration('copilotChatSaver');
+    const config = vscode.workspace.getConfiguration('copilotScribe');
     const minScore = config.get<number>('similarChatsMinScore', 0.05);
 
     const index = getIndex();
